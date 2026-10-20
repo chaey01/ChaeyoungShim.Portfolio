@@ -14,8 +14,8 @@
     --mute: #a3a3a3;
     --bg: #fff;
     --pad: 32px;
-    --slide-h: 46vh;       /* 가운데 작업 이미지 높이 */
-    --slide-w: min(44vw, 680px);
+    --slide-w: min(46vw, 760px, 88vh);   /* 가운데 작업 이미지 폭 (높이는 16:9로 자동) */
+    --slide-h: calc(var(--slide-w) * 9 / 16);
     --peek: 7vh;           /* 위아래로 살짝 보이는 이전/다음 작업 높이 */
     --ease: cubic-bezier(.7, 0, .2, 1);
   }
@@ -125,6 +125,8 @@
   }
   .pintro .meta { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); line-height: 1.8; }
   .pintro .meta b { display: block; font-weight: 400; color: var(--ink); font-size: 13px; text-transform: none; letter-spacing: -0.01em; margin-bottom: 14px; }
+  .pintro .visit { display: table; margin-top: 18px; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 2px; letter-spacing: .06em; }
+  .pintro .visit:hover { opacity: .5; }
   .pintro .text { font-size: clamp(16px, 1.45vw, 21px); line-height: 1.45; font-weight: 300; max-width: 760px; }
   .pintro .text p + p { margin-top: 1em; }
 
@@ -152,7 +154,7 @@
   /* ============ Works: 모든 작업 한눈에 ============ */
   .works {
     position: fixed; inset: 0; z-index: 4; background: #fff;
-    overflow-y: auto; padding: 120px var(--pad) 80px;
+    overflow-y: auto; padding: 120px calc(var(--pad) + 64px) 80px var(--pad);
     opacity: 0; pointer-events: none; transition: opacity .45s;
   }
   body.all .works { opacity: 1; pointer-events: auto; }
@@ -164,22 +166,44 @@
   .works .whead h2 { font-weight: 400; font-size: clamp(26px, 2.6vw, 40px); letter-spacing: -0.03em; }
   .works .whead span { color: var(--mute); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; }
   .grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 64px 2.4vw;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 36px 1.4vw;
   }
   .item { cursor: pointer; opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .9s cubic-bezier(.2,.7,.2,1); }
-  body.all .item { opacity: 1; transform: none; transition-delay: calc(var(--i) * 70ms); }
-  .item .thumb { aspect-ratio: 4/3; overflow: hidden; background: #f3f3f3; }
-  .item .thumb > * { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
-  @media (hover: hover) { .item:hover .thumb > * { transform: scale(1.04); } .item:hover .cap b { opacity: .55; } }
-  .item .cap {
-    display: grid; grid-template-columns: 34px 1fr auto; gap: 8px;
-    margin-top: 12px; align-items: baseline;
+  body.all .item { opacity: 1; transform: none; transition-delay: calc(var(--i) * 45ms); }
+  .item .thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #f3f3f3; }
+  .item .thumb > img, .item .thumb > video, .item .thumb > .ph { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+  .item .thumb .over {
+    position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 12px 14px;
+    color: #fff; font-size: 13px; letter-spacing: -0.01em;
+    background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0) 60%);
+    opacity: 0; transition: opacity .4s;
   }
+  .item .cap { display: flex; gap: 10px; margin-top: 9px; align-items: baseline; }
   .item .cap .n { color: var(--mute); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; }
-  .item .cap b { font-weight: 400; font-size: 14px; letter-spacing: -0.015em; }
-  .item .cap small { color: var(--mute); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; grid-column: 2; }
-  .item .cap .y { color: var(--mute); font-size: 11px; grid-column: 3; grid-row: 1; }
+  .item .cap small { color: var(--mute); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+  .item .cap .y { margin-left: auto; color: var(--mute); font-size: 10px; }
+  @media (hover: hover) {
+    .item:hover .thumb > img, .item:hover .thumb > video, .item:hover .thumb > .ph { transform: scale(1.05); }
+    .item:hover .thumb .over { opacity: 1; }
+  }
+  @media (hover: none) { .item .thumb .over { opacity: 1; } }
+
+  /* 오른쪽 가운데: 슬라이드 ↔ 갤러리 전환 버튼 */
+  .vtoggle {
+    position: fixed; right: var(--pad); top: 50%; transform: translateY(-50%);
+    z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+    transition: opacity .4s;
+  }
+  .vtoggle .ico { width: 34px; height: 34px; border: 1px solid #d8d8d8; border-radius: 50%; display: grid; place-items: center; background: #fff; transition: border-color .3s, transform .4s; }
+  .vtoggle:hover .ico { border-color: var(--ink); transform: scale(1.06); }
+  .vtoggle svg { width: 14px; height: 14px; }
+  .vtoggle .lbl { writing-mode: vertical-rl; }
+  .vtoggle .to-slide { display: none; }
+  body.all .vtoggle .to-slide { display: block; }
+  body.all .vtoggle .to-gallery { display: none; }
+  body.project .vtoggle { opacity: 0; pointer-events: none; }
 
   .viewall {
     position: fixed; right: var(--pad); bottom: 48px;
@@ -298,9 +322,9 @@
   .home { transition: opacity 1.4s ease .2s, filter 1.4s ease .2s; }
 
   /* ============ 모바일 ============ */
-  @media (max-width: 1100px) and (min-width: 801px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 1100px) and (min-width: 801px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 800px) {
-    :root { --pad: 16px; --slide-w: 84vw; --slide-h: 52vh; --peek: 5vh; }
+    :root { --pad: 16px; --slide-w: 88vw; --peek: 7vh; }
     header nav { gap: 22px; }
     .ptitle { top: 64px; transform: none; width: auto; right: var(--pad); font-size: 26px; }
     .slider { top: 54%; }
@@ -309,8 +333,10 @@
     .pintro { grid-template-columns: 1fr; gap: 24px; }
     .pmedia .block:nth-child(n) { width: 100%; margin-left: 0; }
     .pbody { padding: 10vh 16px 8vh; }
-    .works { padding: 90px 16px 60px; }
-    .grid { grid-template-columns: 1fr; gap: 40px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 22px 10px; }
+    .vtoggle { top: auto; bottom: 22px; transform: none; }
+    .vtoggle .lbl { display: none !important; }
+    .works { padding: 90px 16px 80px; }
   }
 </style>
 </head>
@@ -335,14 +361,21 @@
   <h2 class="ptitle" id="ptitle"><span></span></h2>
   <div class="slider" id="slider"></div>
   <ul class="cats" id="cats"></ul>
-  <div class="scroll-hint">Scroll</div>
   <div class="count" id="count"></div>
-  <a href="#works" class="viewall" id="viewall">View all</a>
 </main>
 
-<!-- Works: 모든 작업 한눈에 -->
+<!-- 오른쪽 버튼: 슬라이드 ↔ 갤러리 -->
+<button class="vtoggle" id="vtoggle" type="button" aria-label="Switch view">
+  <span class="ico">
+    <svg class="to-gallery" viewBox="0 0 14 14" fill="currentColor"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg>
+    <svg class="to-slide" viewBox="0 0 14 14" fill="currentColor"><rect x="0" y="3" width="14" height="8"/></svg>
+  </span>
+  <span class="lbl to-gallery">Gallery</span><span class="lbl to-slide">Slide</span>
+</button>
+
+<!-- Works: 모든 작업 한눈에 (갤러리) -->
 <section class="works" id="works">
-  <div class="whead"><h2>Works</h2><span id="wcount"></span></div>
+  <div class="whead"><h2>Gallery</h2><span id="wcount"></span></div>
   <div class="grid" id="grid"></div>
 </section>
 
@@ -378,11 +411,55 @@
        { src: "images/01/a.jpg" }               이미지 1장
        { src: "clips/a.mp4", video: true }      영상 (자동재생/무음/반복)
        { row: [ {src:..}, {src:..} ] }          2장 나란히
-       { embed: "https://player.vimeo.com/video/ID" }   유튜브/비메오 영상 넣기
+       { embed: "https://player.vimeo.com/video/ID" }   유튜브/비메오 영상 (또는 웹 작업 주소) 넣기
+   - link: 작업 웹사이트 주소가 있으면 "Visit project ↗" 버튼이 생겨요
        { caption: "..." }                       캡션 추가
    - src/cover가 비어 있으면 임시 색 박스가 대신 나와요.
    ========================================================= */
 const PROJECTS = [
+  {
+    title: "BROWN CHIPPING PEACEFUL MOUNTAIN",
+    type: "Interactive Papercut",
+    year: "2026",
+    cover: "images/papercut/cover.jpg",
+    link: "https://chaey01.github.io/Papercut-art/",
+    text: [
+      "A papercut piece built from four words collected during a ten-minute meditation — a colour, a sound, a feeling and an object: BROWN, CHIPPING, PEACEFUL, MOUNTAIN.",
+      "Each word becomes a layer of cut paper. Opening the folded pop-up card and touching the words lets the landscape assemble itself, one paper layer at a time."
+    ],
+    meta: "Web, canvas · Code as Nature, CalArts",
+    media: [
+      { embed: "https://chaey01.github.io/Papercut-art/", caption: "Live piece — click the card, then the words" },
+      { src: "images/papercut/still.jpg", ar: "16/9" }
+    ]
+  },
+  {
+    title: "Code as Nature",
+    type: "Generative / p5.js",
+    year: "2026",
+    cover: "images/code-as-nature/cover.jpg",
+    link: "https://chaey01.github.io/",
+    text: [
+      "A weekly series of p5.js sketches exploring growth, flocking, noise and decay — natural systems rewritten as code.",
+      "Each sketch is a small rule set that is allowed to run until it surprises me."
+    ],
+    meta: "p5.js, browser · CalArts, Fall 2026",
+    media: [
+      { embed: "https://chaey01.github.io/", caption: "Class archive — weekly sketches" }
+    ]
+  },
+  {
+    title: "Implied Machine",
+    type: "Physical Computing",
+    year: "2026",
+    cover: "", hue: 210,
+    text: [
+      "Motors, sensors and Arduino treated as raw material rather than tools.",
+      "The machine is never shown in full — only the traces and shadows of its movement."
+    ],
+    meta: "Arduino, motors, light · CalArts, Fall 2026",
+    media: [ { ar: "16/9" }, { ar: "16/9" } ]
+  },
   {
     title: "Hope of Dance",
     type: "Projection Design",
@@ -590,6 +667,41 @@ const PROJECTS = [
       { embed: "https://www.youtube.com/embed/rwBvWmds9Xg" },
       { src: "images/13/p27.jpg", ar: "16/9" }
     ]
+  },
+  {
+    title: "Stage Projection",
+    type: "Projection Design",
+    year: "2019–2025",
+    cover: "", hue: 0,
+    text: [
+      "Projection design for multidisciplinary live performance — mapping image onto bodies, scenery and architecture.",
+      "Light here is a performer: it enters, reacts and exits with the actors."
+    ],
+    meta: "Theatre, dance · Projection mapping",
+    media: [ { ar: "16/9" }, { ar: "16/9" } ]
+  },
+  {
+    title: "Interactive Room",
+    type: "Interactive Installation",
+    year: "",
+    cover: "", hue: 52,
+    text: [
+      "An interactive installation where the visitor's movement redraws the projected space in real time.",
+      "No two visits leave the room the same."
+    ],
+    meta: "Installation",
+    media: [ { ar: "16/9" }, { ar: "16/9" } ]
+  },
+  {
+    title: "Archive / Playground",
+    type: "Experiments",
+    year: "Ongoing",
+    cover: "", hue: 300,
+    text: [
+      "Small tests, sketches and leftovers that didn't become projects (yet)."
+    ],
+    meta: "Ongoing",
+    media: [ { row: [ { ar: "1/1" }, { ar: "1/1" } ] } ]
   }
 ];
 
@@ -643,8 +755,8 @@ PROJECTS.forEach((p, i) => {
   const it = document.createElement("div");
   it.className = "item";
   it.style.setProperty("--i", i);
-  it.innerHTML = `<div class="thumb">${coverEl(p)}</div>
-    <div class="cap"><span class="n">${pad(i)}</span><b>${p.title}</b><span class="y">${p.year || ""}</span><small>${p.type}</small></div>`;
+  it.innerHTML = `<div class="thumb">${coverEl(p)}<div class="over">${p.title}</div></div>
+    <div class="cap"><span class="n">${pad(i)}</span><small>${p.type}</small><span class="y">${p.year || ""}</span></div>`;
   it.onclick = () => go("#" + pad(i));
   grid.appendChild(it);
 });
@@ -759,7 +871,7 @@ function showProject(i) {
     <section class="hero">${coverEl(p)}<div class="htitle">${p.title}</div></section>
     <section class="pbody">
       <div class="pintro">
-        <div class="meta"><b>${p.title}</b>${p.type}<br>${p.meta || p.year || ""}</div>
+        <div class="meta"><b>${p.title}</b>${p.type}<br>${p.meta || p.year || ""}${p.link ? `<a class="visit" href="${p.link}" target="_blank" rel="noopener">Visit project ↗</a>` : ""}</div>
         <div class="text">${p.text.map(t => `<p>${t}</p>`).join("")}</div>
       </div>
       <div class="pmedia">${blocks}</div>
@@ -805,7 +917,7 @@ const goHome = e => { e && e.preventDefault(); go(""); };
 document.querySelectorAll("[data-home]").forEach(el => el.addEventListener("click", goHome));
 $("#aboutBtn").onclick = e => { e.preventDefault(); go("#about"); };
 $("#worksBtn").onclick = e => { e.preventDefault(); go("#works"); };
-$("#viewall").onclick = e => { e.preventDefault(); go("#works"); };
+$("#vtoggle").onclick = () => (location.hash === "#works" ? back() : go("#works"));
 $("#about").onclick = e => { if (!e.target.closest("a")) back(); };
 addEventListener("keydown", e => { if (e.key === "Escape" && location.hash) back(); });
 addEventListener("popstate", route);
