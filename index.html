@@ -116,18 +116,6 @@
   }
   body.project .viewer { opacity: 1; pointer-events: auto; }
   .hero { position: relative; height: 100vh; overflow: hidden; }
-  .hero.is-live { height: 88vh; background: #1d1626; }
-  .hero iframe.live { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
-  .livehint {
-    position: absolute; left: 0; right: 0; bottom: 18px; z-index: 2; text-align: center; pointer-events: none;
-    animation: hintfade 1s 8s forwards;
-  }
-  .livehint span {
-    display: inline-block; padding: 7px 14px; border-radius: 20px;
-    background: rgba(255,255,255,.88); color: #111;
-    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
-  }
-  @keyframes hintfade { to { opacity: 0; } }
   .hero > img, .hero > video, .hero > .ph { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .pbody { padding: 14vh 8vw 10vh; }
@@ -205,13 +193,14 @@
   .vtoggle {
     position: fixed; right: var(--pad); top: 50%; transform: translateY(-50%);
     z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 10px;
-    font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
-    transition: opacity .4s;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9a9a9a;
+    transition: opacity .4s, color .3s;
   }
   .vtoggle .ico { width: 34px; height: 34px; border: 1px solid #d8d8d8; border-radius: 50%; display: grid; place-items: center; background: #fff; transition: border-color .3s, transform .4s; }
-  .vtoggle:hover .ico { border-color: var(--ink); transform: scale(1.06); }
+  .vtoggle:hover { color: var(--ink); }
+  .vtoggle:hover .ico { border-color: #9a9a9a; transform: scale(1.06); }
   .vtoggle svg { width: 14px; height: 14px; }
-  .vtoggle .lbl { writing-mode: vertical-rl; }
+  .vtoggle .lbl { writing-mode: horizontal-tb; }
   .vtoggle .to-slide { display: none; }
   body.all .vtoggle .to-slide { display: block; }
   body.all .vtoggle .to-gallery { display: none; }
@@ -425,7 +414,6 @@
        { row: [ {src:..}, {src:..} ] }          2장 나란히
        { embed: "https://player.vimeo.com/video/ID" }   유튜브/비메오 영상 (또는 웹 작업 주소) 넣기
    - link: 작업 웹사이트 주소가 있으면 "Visit project ↗" 버튼이 생겨요
-   - live: 웹 작업 주소를 넣으면 프로젝트 첫 화면에서 그 작업이 전체 화면으로 바로 실행돼요
        { caption: "..." }                       캡션 추가
    - src/cover가 비어 있으면 임시 색 박스가 대신 나와요.
    ========================================================= */
@@ -436,13 +424,13 @@ const PROJECTS = [
     year: "2026",
     cover: "images/papercut/cover.jpg",
     link: "https://chaey01.github.io/Papercut-art/",
-    live: "https://chaey01.github.io/Papercut-art/",   // 프로젝트 첫 화면에서 작업이 바로 실행돼요
     text: [
       "A papercut piece built from four words collected during a ten-minute meditation — a colour, a sound, a feeling and an object: BROWN, CHIPPING, PEACEFUL, MOUNTAIN.",
       "Each word becomes a layer of cut paper. Opening the folded pop-up card and touching the words lets the landscape assemble itself, one paper layer at a time."
     ],
     meta: "Web, canvas · Code as Nature, CalArts",
     media: [
+      { embed: "https://chaey01.github.io/Papercut-art/", caption: "Live piece — click the card, then the words" },
       { src: "images/papercut/still.jpg", ar: "16/9" }
     ]
   },
@@ -881,10 +869,7 @@ function showProject(i) {
   const nx = (i + 1) % PROJECTS.length;
 
   viewer.innerHTML = `
-    <section class="hero${p.live ? " is-live" : ""}">${p.live
-      ? `<iframe class="live" src="${p.live}" allow="autoplay; fullscreen" title="${p.title}"></iframe>
-         <div class="livehint"><span>Click the card to open · Scroll for details ↓</span></div>`
-      : `${coverEl(p)}<div class="htitle">${p.title}</div>`}</section>
+    <section class="hero">${coverEl(p)}<div class="htitle">${p.title}</div></section>
     <section class="pbody">
       <div class="pintro">
         <div class="meta"><b>${p.title}</b>${p.type}<br>${p.meta || p.year || ""}${p.link ? `<a class="visit" href="${p.link}" target="_blank" rel="noopener">Visit project ↗</a>` : ""}</div>
