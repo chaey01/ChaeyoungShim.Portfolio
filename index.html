@@ -134,10 +134,10 @@
     transition: opacity .9s, transform 1.1s cubic-bezier(.2,.7,.2,1);
   }
   .pmedia .block.in { opacity: 1; transform: none; }
-  .pmedia .block:nth-child(3n+2) { width: 58%; margin-left: auto; margin-right: 0; }
-  .pmedia .block:nth-child(3n+3) { width: 72%; margin-left: 6%; }
   .pmedia .row { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
   .pmedia img, .pmedia video, .pmedia .ph { width: 100%; display: block; }
+  .pmedia .embed { position: relative; aspect-ratio: 16/9; background: #000; }
+  .pmedia .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .pmedia .caption { margin-top: 8px; color: var(--mute); }
 
   .next {
@@ -378,80 +378,218 @@
        { src: "images/01/a.jpg" }               이미지 1장
        { src: "clips/a.mp4", video: true }      영상 (자동재생/무음/반복)
        { row: [ {src:..}, {src:..} ] }          2장 나란히
+       { embed: "https://player.vimeo.com/video/ID" }   유튜브/비메오 영상 넣기
        { caption: "..." }                       캡션 추가
    - src/cover가 비어 있으면 임시 색 박스가 대신 나와요.
    ========================================================= */
 const PROJECTS = [
   {
-    title: "BROWN CHIPPING PEACEFUL MOUNTAIN",
-    type: "Papercut video",
-    year: "2026",
-    cover: "", hue: 28,
+    title: "Hope of Dance",
+    type: "Projection Design",
+    year: "2023",
+    cover: "images/01/cover.jpg",
     text: [
-      "A 1920×800 papercut film built from four words collected during a ten-minute meditation — a colour, a sound, a feeling and an object.",
-      "Each word became a layer of cut paper, filmed frame by frame and composited into a slow, breathing landscape."
+      "Participated as a media artist for the interdisciplinary dance performance Dance of Hope, staged at Prugio Art Hall.",
+      "As part of a large-scale collaborative team, I developed scenographic video content that functioned as a narrative vehicle. The projection design synchronized kinetic animation with original composition and choreography, expanding the storytelling into a unified theatrical experience."
     ],
-    meta: "2026 · Papercut, stop-motion, video",
-    media: [ {}, { row: [ {ar:"3/4"}, {ar:"3/4"} ] }, { ar:"12/5", caption:"Still, 1920×800" }, {} ]
+    meta: "Convergence Media Dance Theater · 60 min",
+    media: [
+      { embed: "https://www.youtube.com/embed/yT_bAtWzA1M" },
+      { src: "images/01/p02.jpg", ar: "16/9" }
+    ]
   },
   {
-    title: "Code as Nature",
-    type: "Generative / p5.js",
-    year: "2026",
-    cover: "", hue: 140,
+    title: "Fragments of a Memory Called Love",
+    type: "Projection Design",
+    year: "2023",
+    cover: "images/02/cover.jpg",
     text: [
-      "A weekly series of p5.js sketches exploring growth, flocking, noise and decay — natural systems rewritten as code.",
-      "Each sketch is a small rule set that is allowed to run until it surprises me."
+      "Directed the stage media for the musical drama Pieces of Memories called Love, performed at Prugio Art Hall.",
+      "To visualize the euphoria and vitality inherent in the inception of love, I curated a visual atmosphere centered on the verdant tones of a midsummer day and night. The use of a vivid, dynamic color palette effectively translated abstract emotions into an immersive spatial environment."
     ],
-    meta: "2026 · p5.js, browser",
-    media: [ {ar:"1/1"}, { row: [ {ar:"1/1"}, {ar:"1/1"} ] }, {ar:"16/9"} ]
+    meta: "Convergence Media Dance Theater · 60 min",
+    media: [
+      { embed: "https://www.youtube.com/embed/qwLhVeZGeLs" },
+      { src: "images/02/p03.jpg", ar: "16/9" }
+    ]
   },
   {
-    title: "Implied Machine",
-    type: "Physical computing",
-    year: "2026",
-    cover: "", hue: 210,
+    title: "Respiring Hangeul",
+    type: "AR Installation / 3D Modeling",
+    year: "2025",
+    cover: "images/03/cover.jpg",
     text: [
-      "Motors, sensors and Arduino treated as raw material rather than tools.",
-      "The machine is never shown in full — only the traces and shadows of its movement."
+      "RESPIRING HANGEUL reinterprets language not as a fixed system, but as an accumulation of embodied traces. The project collects handwriting—one of the most private marks produced by the body—and transforms it into a public typographic system.",
+      "These forms are virtually situated through augmented reality in Gwanghwamun Square, the historic symbolic center of Hangeul. By overlaying a living language onto a space of tradition, the project reframes Hangeul not as a static cultural artifact, but as an evolving, living organism.",
+      "Twenty participants were instructed to write the word “Hello” (Annyeonghaseyo) in a single continuous stroke within one second. From these gestural strokes, Hangul consonants were reconstructed and transformed into three-dimensional tubular forms using Blender, then placed within physical spaces through Adobe Aero."
     ],
-    meta: "2026 · Arduino, motors, light",
-    media: [ {ar:"4/5"}, {}, { row: [ {ar:"3/4"}, {ar:"3/4"} ] } ]
+    meta: "Augmented Reality, Blender, Adobe Aero · Dimensions variable",
+    media: [
+      { src: "images/03/p04.jpg", ar: "16/9" },
+      { src: "images/03/p05.jpg", ar: "16/9", caption: "Ideation — curves extracted from handwriting samples" },
+      { src: "images/03/p06.jpg", ar: "16/9", caption: "3D modeling in Blender and AR placement" }
+    ]
   },
   {
-    title: "Stage Projection",
-    type: "Projection design",
-    year: "2019–2025",
-    cover: "", hue: 0,
-    text: [
-      "Projection design for multidisciplinary live performance — mapping image onto bodies, scenery and architecture.",
-      "Light here is a performer: it enters, reacts and exits with the actors."
-    ],
-    meta: "Theatre, dance · Projection mapping",
-    media: [ {ar:"16/9"}, {ar:"16/9"}, { row: [ {ar:"4/3"}, {ar:"4/3"} ] }, {ar:"16/9"} ]
-  },
-  {
-    title: "Interactive Room",
-    type: "Installation",
+    title: "Club Earth U",
+    type: "Interactive Installation",
     year: "2024",
-    cover: "", hue: 52,
+    cover: "images/04/cover.jpg",
     text: [
-      "An interactive installation where the visitor's movement redraws the projected space in real time.",
-      "No two visits leave the room the same."
+      "CLUB EARTH U is an immersive interactive installation that visualizes the formation of a vast universe through the aggregation of microscopic particles. The work draws a conceptual parallel between two disparate spaces: the universe and the nightclub.",
+      "Just as innumerable particles compose the cosmos, a nightclub consists of the presence of dancing individuals. As participants dance, their projected silhouettes dissolve into luminous particles, producing dynamic imagery.",
+      "As the leader of a four-person team, I directed the overall production and engineered the real-time interactions using TouchDesigner and Azure Kinect."
     ],
-    meta: "2024 · TouchDesigner, depth camera, projection",
-    media: [ {ar:"16/9"}, { row: [ {ar:"3/4"}, {ar:"3/4"} ] }, {ar:"16/9"} ]
+    meta: "TouchDesigner, Azure Kinect · 1 min 40 sec",
+    media: [
+      { embed: "https://player.vimeo.com/video/1151206467" },
+      { src: "images/04/p08.jpg", ar: "16/9", caption: "Installation view" },
+      { src: "images/04/p07.jpg", ar: "16/9" }
+    ]
   },
   {
-    title: "Archive / Playground",
-    type: "Experiments",
-    year: "—",
-    cover: "", hue: 300,
+    title: "Jogakbo",
+    type: "Digital Textile",
+    year: "2025",
+    cover: "images/05/cover.jpg",
     text: [
-      "Small tests, sketches and leftovers that didn't become projects (yet)."
+      "This project explores the digital and material realms, as well as individual identity and collective structure, utilizing Jogakbo—a traditional Korean patchwork craft formed by stitching fabric remnants into a unified whole.",
+      "The seams of Jogakbo are redefined not as boundaries that divide surfaces, but as lines that connect heterogeneous elements to generate new spatialities. As fragments converge into a whole and extend into public space through the wearer, the work functions as an active mediator beyond mere visual representation.",
+      "Through the transformation of static digital imagery into wearable garments that evolve with movement, the two-dimensional image expands into a three-dimensional, spatio-temporal experience."
     ],
-    meta: "Ongoing",
-    media: [ { row: [ {ar:"1/1"}, {ar:"1/1"} ] }, { row: [ {ar:"1/1"}, {ar:"1/1"} ] } ]
+    meta: "Digital Textile Print on Chiffon · 70.9×110.2 in",
+    media: [
+      { src: "images/05/p09.jpg", ar: "16/9" },
+      { src: "images/05/p10.jpg", ar: "16/9", caption: "Pattern graphic detail · 55.1×35.4 in each (set of 2)" },
+      { src: "images/05/p11.jpg", ar: "16/9", caption: "Materialization" }
+    ]
+  },
+  {
+    title: "Gathering the Moments of the Gaze",
+    type: "Photography / Pigment Prints",
+    year: "2025",
+    cover: "images/06/cover.jpg",
+    text: [
+      "GATHERING THE MOMENTS OF THE GAZE translates the abstract notion of time into a measurable visual structure. The project documents eight locations in Seoul, recording the artist’s gaze through photography.",
+      "The duration of visual attention at each site determined the number of shutter releases, treating each click as a single frame. In this process, photography operates not merely as documentation, but as a method for quantifying temporal experience.",
+      "An accompanying artist book archives the procedural logic of the project, transforming intangible temporal data into a tangible physical form through the arrangement, extension, and compression of captured frames."
+    ],
+    meta: "Dimensions variable (original poster 356.3×503.9 in)",
+    media: [
+      { src: "images/06/p12.jpg", ar: "16/9" },
+      { src: "images/06/p13.jpg", ar: "16/9", caption: "Artist book · 97.6×59.1 in" },
+      { src: "images/06/p14.jpg", ar: "16/9", caption: "Editorial logic" },
+      { src: "images/06/p15.jpg", ar: "16/9", caption: "Series I: 11–13 FPS" },
+      { src: "images/06/p16.jpg", ar: "16/9", caption: "Series II: 14–21 FPS" }
+    ]
+  },
+  {
+    title: "ALYAC Hospital",
+    type: "Interactive Installation",
+    year: "2023",
+    cover: "images/07/cover.jpg",
+    text: [
+      "ALYAC HOSPITAL is an interactive media installation inspired by the Korean cybersecurity software brand ALYAC. Literally translating to “medicinal pill,” the project extends the software’s metaphor of digital healing into physical space.",
+      "The work critiques commercial algorithms and surveillance mechanisms that silently infiltrate users’ lives. Adopting the structure of a hospital, it visualizes diagnosis and treatment through objects and AR: smartphones are reimagined as patients, and system errors as viral infection.",
+      "As part of a three-person team, I was responsible for the technical implementation of interactions and the development of AR filters."
+    ],
+    meta: "AR filters, objects · 2 min",
+    media: [
+      { embed: "https://player.vimeo.com/video/1151203291" },
+      { src: "images/07/p17.jpg", ar: "16/9" },
+      { src: "images/07/p18.jpg", ar: "16/9", caption: "AR marker design" },
+      { src: "images/07/p19.jpg", ar: "16/9", caption: "Process" }
+    ]
+  },
+  {
+    title: "Maze-Runner Title Sequence",
+    type: "Experimental Video",
+    year: "2022",
+    cover: "images/08/cover.jpg",
+    text: [
+      "Designed as a title sequence for the film The Maze Runner, this project physically materializes the film’s central motif—the maze—through the manual craft of rolling and erecting paper.",
+      "The resulting curvature emphasizes the organic nature of the labyrinthine structure. Ultimately, the maze is portrayed not merely as a static physical space, but as a closed, fluid organism—an ever-changing entity that actively obstructs escape."
+    ],
+    meta: "Paper, video · 2 min 50 sec",
+    media: [
+      { embed: "https://player.vimeo.com/video/1144251113" },
+      { src: "images/08/p20.jpg", ar: "16/9" }
+    ]
+  },
+  {
+    title: "Where Am I, Who Am I",
+    type: "3 Channel Video",
+    year: "2025",
+    cover: "images/09/cover.jpg",
+    text: [
+      "This three-channel video work investigates questions of place and identity through the artist’s experience as an exchange student at the University of California, Davis.",
+      "The left channel employs monochromatic imagery to express psychological distance and alienation. The center channel features a 3D photogrammetric scan of the artist’s childhood home in Korea, questioning the true definition of “home.” The right channel gradually restores natural color, as the unfamiliar environment becomes internalized and eventually accepted."
+    ],
+    meta: "3-channel video, photogrammetry · 47 sec",
+    media: [
+      { embed: "https://player.vimeo.com/video/1148139148" },
+      { src: "images/09/p21.jpg", ar: "16/9" }
+    ]
+  },
+  {
+    title: "Unfamiliar Gaze",
+    type: "Experimental Video",
+    year: "2022",
+    cover: "images/10/cover.jpg",
+    text: [
+      "UNFAMILIAR GAZE challenges anthropocentric modes of viewing the urban environment by adopting a non-human perspective. While the footage captures a familiar walking path, the imagery is reconfigured through the perceptual framework of an insect.",
+      "The work employs compound-eye simulation and convex lens distortion to construct a non-human visual logic. A halftone texture is layered onto the image to contrast with the clarity of human vision, emphasizing sensory estrangement."
+    ],
+    meta: "Video · 1 min 34 sec",
+    media: [
+      { embed: "https://player.vimeo.com/video/1143926941" },
+      { src: "images/10/p22.jpg", ar: "16/9" }
+    ]
+  },
+  {
+    title: "AKMU Album Design",
+    type: "Editorial Design",
+    year: "2022",
+    cover: "images/11/cover.jpg",
+    text: [
+      "This project reinterprets the album cover for AKDONG MUSICIAN’s (AKMU) third full-length album, Sailing. Developed during the transitional period preceding graduation, the design visualizes the emotional state of entering society—marked by uncertainty, loss, and anticipation.",
+      "Focusing on the album’s central theme of departure, the work employs the metaphor of a small vessel drifting across an open sea toward the horizon, prioritizing controlled imagery over direct emotional expression."
+    ],
+    meta: "Album packaging, editorial",
+    media: [
+      { src: "images/11/p23.jpg", ar: "16/9" }
+    ]
+  },
+  {
+    title: "‘A-hae’ App",
+    type: "UX / UI Design",
+    year: "2023",
+    cover: "images/12/cover.jpg",
+    text: [
+      "Despite the rapid expansion of the infant food market, parents remain beleaguered by anxiety regarding chemical additives and harmful ingredients. A-hae is a mobile application designed to alleviate the cognitive burden of navigating complex nutrition labels.",
+      "Functioning as an interpretive interface for food safety, the app leverages OCR technology to instantly analyze product packaging, translating obscure ingredient data into intuitive visualizations."
+    ],
+    meta: "Team of 3 · Mobile app, OCR",
+    media: [
+      { src: "images/12/p24.jpg", ar: "16/9" },
+      { src: "images/12/p25.jpg", ar: "16/9", caption: "Market analysis, persona, problem & solution" },
+      { src: "images/12/p26.jpg", ar: "16/9", caption: "Main functions" }
+    ]
+  },
+  {
+    title: "100% Dilemma",
+    type: "AI Video & Research",
+    year: "2025",
+    cover: "images/13/cover.jpg",
+    text: [
+      "AI-generated portraiture currently achieves a state of synthetic perfection; yet this very flawlessness paradoxically triggers the “Uncanny Valley.” I define this phenomenon as the “100% Dilemma”: as technology attains absolute technical integrity, it inevitably forfeits authenticity.",
+      "This project posits that subtracting just 2% from digital perfection is sufficient to restore the human essence. By analyzing unstructured human datasets—monologues, vlogs, audition tapes—and recalibrating generative AI prompts with these “intentional flaws,” the work asks: in an age of perfect simulation, what truly makes us human?"
+    ],
+    meta: "Team of 2 · Sora, PlayAI, ChatGPT, Runway",
+    media: [
+      { embed: "https://www.youtube.com/embed/rwBvWmds9Xg" },
+      { src: "images/13/p27.jpg", ar: "16/9" }
+    ]
   }
 ];
 
@@ -460,11 +598,13 @@ const PROJECTS = [
 const $ = s => document.querySelector(s);
 const pad = n => String(n + 1).padStart(2, "0");
 const grad = (h, i = 0) =>
-  `linear-gradient(${135 + i * 40}deg, hsl(${h} 40% ${78 - i * 3}%), hsl(${(h + 25) % 360} 30% ${62 + i * 3}%))`;
+  `linear-gradient(${135 + i * 40}deg, hsl(${h || 30} 40% ${78 - i * 3}%), hsl(${((h || 30) + 25) % 360} 30% ${62 + i * 3}%))`;
 const isVideo = src => /\.(mp4|webm|mov)$/i.test(src);
 
 function mediaEl(m, p, i) {
   const ar = m.ar || "4/3";
+  if (m.embed)
+    return `<div class="embed"><iframe src="${m.embed}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="${p.title}"></iframe></div>`;
   if (m.src && (m.video || isVideo(m.src)))
     return `<video src="${m.src}" autoplay muted loop playsinline></video>`;
   if (m.src) return `<img src="${m.src}" alt="${p.title}" loading="lazy">`;
@@ -487,10 +627,12 @@ const slides = PROJECTS.map((p, i) => {
   slider.appendChild(el);
   return el;
 });
-PROJECTS.forEach((p, i) => {
+/* 왼쪽 아래 카테고리 (같은 분류는 하나로 묶어요) */
+const TYPES = [...new Set(PROJECTS.map(p => p.type))];
+TYPES.forEach(t => {
   const li = document.createElement("li");
-  li.textContent = p.type;
-  li.onclick = () => moveTo(i);
+  li.textContent = t;
+  li.onclick = () => moveTo(PROJECTS.findIndex(p => p.type === t));
   cats.appendChild(li);
 });
 
@@ -516,7 +658,7 @@ function moveTo(i) {
 }
 function setTitle(i) {
   slides.forEach((s, j) => s.classList.toggle("current", j === i));
-  [...cats.children].forEach((li, j) => li.classList.toggle("on", j === i));
+  [...cats.children].forEach(li => li.classList.toggle("on", li.textContent === PROJECTS[i].type));
   count.innerHTML = `<b>${pad(i)}</b> / ${pad(PROJECTS.length - 1)}`;
   const span = ptitle.querySelector("span");
   ptitle.classList.add("out");
