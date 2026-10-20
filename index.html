@@ -311,6 +311,7 @@
     <a href="#" id="aboutBtn">About</a>
   </nav>
 </header>
+<div class="about-snippet">Light, projection and code —<br>spaces that react to the body.</div>
 
 <!-- 프로젝트 설명 (프로젝트 클릭 시) -->
 <div class="desc" id="desc"></div>
@@ -445,7 +446,7 @@ const LAYOUT = [
 const $ = s => document.querySelector(s);
 const pad = n => String(n + 1).padStart(2, "0");
 const grad = (h, i = 0) =>
-  `linear-gradient(${135 + i * 40}deg, hsl(${h} 95% ${74 - i * 4}%), hsl(${(h + 45) % 360} 90% ${60 + i * 3}%))`;
+  `linear-gradient(${135 + i * 40}deg, hsl(${h} 52% ${76 - i * 3}%), hsl(${(h + 25) % 360} 38% ${60 + i * 3}%))`;
 
 function mediaEl(m, p, i) {
   const ar = m.ar || "4/3";
