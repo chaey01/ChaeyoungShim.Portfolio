@@ -149,6 +149,45 @@
   .next b { font-weight: 400; font-size: clamp(22px, 2.4vw, 34px); letter-spacing: -0.03em; transition: opacity .3s; }
   .next:hover b { opacity: .5; }
 
+  /* ============ Works: 모든 작업 한눈에 ============ */
+  .works {
+    position: fixed; inset: 0; z-index: 4; background: #fff;
+    overflow-y: auto; padding: 120px var(--pad) 80px;
+    opacity: 0; pointer-events: none; transition: opacity .45s;
+  }
+  body.all .works { opacity: 1; pointer-events: auto; }
+  body.all .home { opacity: 0; pointer-events: none; }
+  .works .whead {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 14px; margin-bottom: 40px; border-bottom: 1px solid #e5e5e5;
+  }
+  .works .whead h2 { font-weight: 400; font-size: clamp(26px, 2.6vw, 40px); letter-spacing: -0.03em; }
+  .works .whead span { color: var(--mute); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; }
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 64px 2.4vw;
+  }
+  .item { cursor: pointer; opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .9s cubic-bezier(.2,.7,.2,1); }
+  body.all .item { opacity: 1; transform: none; transition-delay: calc(var(--i) * 70ms); }
+  .item .thumb { aspect-ratio: 4/3; overflow: hidden; background: #f3f3f3; }
+  .item .thumb > * { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+  @media (hover: hover) { .item:hover .thumb > * { transform: scale(1.04); } .item:hover .cap b { opacity: .55; } }
+  .item .cap {
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 8px;
+    margin-top: 12px; align-items: baseline;
+  }
+  .item .cap .n { color: var(--mute); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; }
+  .item .cap b { font-weight: 400; font-size: 14px; letter-spacing: -0.015em; }
+  .item .cap small { color: var(--mute); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; grid-column: 2; }
+  .item .cap .y { color: var(--mute); font-size: 11px; grid-column: 3; grid-row: 1; }
+
+  .viewall {
+    position: fixed; right: var(--pad); bottom: 48px;
+    font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+    border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+  }
+  .viewall:hover { opacity: .5; }
+
   /* 이미지 대신 들어가는 임시 플레이스홀더 */
   .ph {
     aspect-ratio: var(--ar, 4/3);
@@ -259,6 +298,7 @@
   .home { transition: opacity 1.4s ease .2s, filter 1.4s ease .2s; }
 
   /* ============ 모바일 ============ */
+  @media (max-width: 1100px) and (min-width: 801px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 800px) {
     :root { --pad: 16px; --slide-w: 84vw; --slide-h: 52vh; --peek: 5vh; }
     header nav { gap: 22px; }
@@ -269,6 +309,8 @@
     .pintro { grid-template-columns: 1fr; gap: 24px; }
     .pmedia .block:nth-child(n) { width: 100%; margin-left: 0; }
     .pbody { padding: 10vh 16px 8vh; }
+    .works { padding: 90px 16px 60px; }
+    .grid { grid-template-columns: 1fr; gap: 40px; }
   }
 </style>
 </head>
@@ -283,7 +325,7 @@
 <header>
   <div class="name" data-home>Home</div>
   <nav>
-    <a href="#" data-home>Works</a>
+    <a href="#works" id="worksBtn">Works</a>
     <a href="#" id="aboutBtn">About</a>
   </nav>
 </header>
@@ -295,7 +337,14 @@
   <ul class="cats" id="cats"></ul>
   <div class="scroll-hint">Scroll</div>
   <div class="count" id="count"></div>
+  <a href="#works" class="viewall" id="viewall">View all</a>
 </main>
+
+<!-- Works: 모든 작업 한눈에 -->
+<section class="works" id="works">
+  <div class="whead"><h2>Works</h2><span id="wcount"></span></div>
+  <div class="grid" id="grid"></div>
+</section>
 
 <!-- 프로젝트 페이지 -->
 <div class="viewer" id="viewer"></div>
@@ -445,6 +494,19 @@ PROJECTS.forEach((p, i) => {
   cats.appendChild(li);
 });
 
+/* ---------- Works 그리드 ---------- */
+const grid = $("#grid");
+$("#wcount").textContent = pad(PROJECTS.length - 1) + " projects";
+PROJECTS.forEach((p, i) => {
+  const it = document.createElement("div");
+  it.className = "item";
+  it.style.setProperty("--i", i);
+  it.innerHTML = `<div class="thumb">${coverEl(p)}</div>
+    <div class="cap"><span class="n">${pad(i)}</span><b>${p.title}</b><span class="y">${p.year || ""}</span><small>${p.type}</small></div>`;
+  it.onclick = () => go("#" + pad(i));
+  grid.appendChild(it);
+});
+
 let target = 0, pos = 0;
 function moveTo(i) {
   i = Math.max(0, Math.min(PROJECTS.length - 1, i));
@@ -488,7 +550,7 @@ function layout() {
 /* 스크롤 / 키보드 / 스와이프로 넘기기 */
 let wheelLock = 0, acc = 0;
 addEventListener("wheel", e => {
-  if (document.body.classList.contains("project") || $("#about").classList.contains("open")) return;
+  if (document.body.classList.contains("project") || document.body.classList.contains("all") || $("#about").classList.contains("open")) return;
   acc += e.deltaY;
   const now = Date.now();
   if (now < wheelLock) return;
@@ -499,7 +561,7 @@ addEventListener("wheel", e => {
   }
 }, { passive: true });
 addEventListener("keydown", e => {
-  if (document.body.classList.contains("project") || $("#about").classList.contains("open")) return;
+  if (document.body.classList.contains("project") || document.body.classList.contains("all") || $("#about").classList.contains("open")) return;
   if (e.key === "ArrowDown" || e.key === "ArrowRight") moveTo(target + 1);
   if (e.key === "ArrowUp" || e.key === "ArrowLeft") moveTo(target - 1);
   if (e.key === "Enter" && !document.body.classList.contains("intro-active")) openProject(target);
@@ -586,6 +648,8 @@ function route() {
   const h = location.hash.slice(1);
   const n = parseInt(h, 10);
   $("#about").classList.toggle("open", h === "about");
+  document.body.classList.toggle("all", h === "works");
+  if (h === "works") { document.body.classList.remove("project"); current = -1; return; }
   if (n >= 1 && n <= PROJECTS.length) {
     if (current !== n - 1 || !document.body.classList.contains("project")) showProject(n - 1);
   } else if (h !== "about") {
@@ -598,6 +662,8 @@ const goHome = e => { e && e.preventDefault(); go(""); };
 
 document.querySelectorAll("[data-home]").forEach(el => el.addEventListener("click", goHome));
 $("#aboutBtn").onclick = e => { e.preventDefault(); go("#about"); };
+$("#worksBtn").onclick = e => { e.preventDefault(); go("#works"); };
+$("#viewall").onclick = e => { e.preventDefault(); go("#works"); };
 $("#about").onclick = e => { if (!e.target.closest("a")) back(); };
 addEventListener("keydown", e => { if (e.key === "Escape" && location.hash) back(); });
 addEventListener("popstate", route);
