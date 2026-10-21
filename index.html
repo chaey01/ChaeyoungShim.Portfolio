@@ -885,7 +885,7 @@ function showProject(i) {
   viewer.innerHTML = `
     <section class="hero${p.live ? " is-live" : ""}">${p.live
       ? `<iframe class="live" src="${p.live}" allow="autoplay; fullscreen" title="${p.title}"></iframe>
-         <div class="livehint"><span>Click the card to open · Scroll for details ↓</span></div>`
+         <div class="livehint"><span>Scroll for details ↓</span></div>`
       : `${coverEl(p)}<div class="htitle">${p.title}</div>`}</section>
     <section class="pbody">
       <div class="pintro">
@@ -895,6 +895,7 @@ function showProject(i) {
       <div class="pmedia">${blocks}</div>
       <div class="next" id="next"><span>Next project</span><b>${PROJECTS[nx].title} →</b></div>
     </section>`;
+  if (p.live) autoStartLive(viewer.querySelector("iframe.live"));
   $("#next").onclick = () => { viewer.scrollTo({ top: 0 }); go("#" + pad(nx)); };
 
   document.body.classList.add("project");
@@ -903,6 +904,30 @@ function showProject(i) {
   io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add("in")),
     { root: viewer, threshold: .1 });
   viewer.querySelectorAll(".block").forEach(b => io.observe(b));
+}
+
+/* ---------- 웹 작업 자동 시작 ----------
+   Papercut처럼 '편지(카드)를 눌러야 열리는' 작업을 포트폴리오 안에서는 자동으로 열어요.
+   카드가 클릭 가능해질 때까지 기다렸다가 대신 눌러 줘요.
+   (같은 주소(chaey01.github.io)에 있는 작업이라 가능해요. Live Server로 열면 주소가 달라서 자동 시작이 안 될 수 있어요) */
+function autoStartLive(frame) {
+  if (!frame) return;
+  frame.addEventListener("load", () => {
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      try {
+        const d = frame.contentDocument;
+        const intro = d && d.getElementById("intro");
+        if (!intro || intro.classList.contains("gone") || intro.classList.contains("open")) { clearInterval(t); return; }
+        if (intro.classList.contains("wait")) {           // 카드가 다 나타나서 누를 수 있는 상태
+          intro.querySelector(".book").click();
+          clearInterval(t);
+        }
+      } catch (e) { clearInterval(t); }                   // 다른 주소라 접근이 막힌 경우: 그냥 직접 클릭
+      if (tries > 40) clearInterval(t);
+    }, 150);
+  }, { once: true });
 }
 
 /* ---------- 화면 이동 + 브라우저 뒤로가기/앞으로가기 ----------
