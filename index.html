@@ -435,7 +435,7 @@ const PROJECTS = [
     title: "BROWN CHIPPING PEACEFUL MOUNTAIN",
     type: "Interactive Papercut",
     year: "2026",
-    cover: "images/papercut/cover.jpg",
+    cover: "images/papercut/cover.mp4",   // 바람에 살랑이는 반복 영상 (멈춘 사진은 cover.jpg)
     link: "https://chaey01.github.io/Papercut-art/",
     live: "https://chaey01.github.io/Papercut-art/",   // 프로젝트 첫 화면에서 작업이 바로 실행돼요
     text: [
@@ -739,7 +739,7 @@ function mediaEl(m, p, i) {
 function coverEl(p) {
   if (!p.cover) return `<div class="ph" style="--g:${grad(p.hue)}"></div>`;
   return isVideo(p.cover)
-    ? `<video src="${p.cover}" autoplay muted loop playsinline></video>`
+    ? `<video src="${p.cover}" poster="${p.cover.replace(/\.(mp4|webm|mov)$/i, ".jpg")}" autoplay muted loop playsinline></video>`
     : `<img src="${p.cover}" alt="${p.title}">`;
 }
 
@@ -942,7 +942,7 @@ addEventListener("popstate", route);
 setTitle(0);
 requestAnimationFrame(layout);
 route();
-</script>
+ </script>
 <script src="intro.js"></script>
 </body>
 </html>
