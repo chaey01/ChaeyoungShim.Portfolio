@@ -851,7 +851,8 @@ function openProject(i) {
   const r = img.getBoundingClientRect();
   const z = document.createElement("div");
   z.className = "zoom";
-  z.innerHTML = coverEl(PROJECTS[i]) + `<div class="ztitle">${PROJECTS[i].title}</div>`;
+  // 웹 작업(live)은 바로 작품이 열리니까 가운데 제목 글자는 띄우지 않아요
+  z.innerHTML = coverEl(PROJECTS[i]) + (PROJECTS[i].live ? "" : `<div class="ztitle">${PROJECTS[i].title}</div>`);
   Object.assign(z.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px" });
   document.body.appendChild(z);
   zooming = true;
