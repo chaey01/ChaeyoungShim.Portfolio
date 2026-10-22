@@ -15,9 +15,9 @@
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   // ---- 조절하기 좋은 값들 ----
-  const SIZE = 44;          // 평소 구슬 크기(px)
+  const SIZE = 40;          // 평소 구슬 크기(px)
   const HOVER_SIZE = 64;    // 카드·버튼 위에서의 크기(px)
-  const FOLLOW = 0.2;       // 따라오는 속도 (1이면 바로, 작을수록 느긋하게)
+  const FOLLOW = 0.6;       // 따라오는 속도 (1이면 바로, 작을수록 느긋하게)
   const BEND = 8;           // 휘어지는 정도 (클수록 볼록하게)
   const FRINGE = 2;         // 가장자리 색 번짐 정도 (0이면 없음)
   const HOVER_TARGETS = "a, button, .cats li, .item, .next, [data-home]";
