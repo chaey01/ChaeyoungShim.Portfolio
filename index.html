@@ -351,6 +351,30 @@
     .vtoggle .lbl { display: none !important; }
     .works { padding: 90px 16px 80px; }
   }
+
+  /* ---- 렌즈 커서 (인트로 유리구슬) — cursor.js와 함께 ---- */
+  .lens-cursor, .lens-rim {
+    position: fixed; left: 0; top: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  /* 볼록하게 휘어 보이는 렌즈 (여기엔 그림자 넣지 마세요! 휘는 위치가 어긋나요) */
+  .lens-cursor {
+    z-index: 9999;
+    backdrop-filter: url(#lens-filter);
+    -webkit-backdrop-filter: url(#lens-filter);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  /* 렌즈 위의 얇은 테두리와 은은한 그림자 */
+  .lens-rim {
+    z-index: 10000;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), inset 0 0 0 0.5px rgba(255, 255, 255, 0.6);
+  }
+  /* 인트로 화면에서는 숨기기 */
+  body.intro-active .lens-cursor,
+  body.intro-active .lens-rim { display: none; }
 </style>
 </head>
 <body>
@@ -970,5 +994,6 @@ requestAnimationFrame(layout);
 route();
  </script>
 <script src="intro.js"></script>
+<script src="cursor.js?v=1"></script>
 </body>
 </html>
