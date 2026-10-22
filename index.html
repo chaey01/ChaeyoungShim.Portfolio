@@ -49,11 +49,11 @@
   /* ============ 홈: 세로 슬라이더 ============ */
   .home { position: fixed; inset: 0; z-index: 2; transition: opacity .6s; }
   body.project .home { opacity: 0; pointer-events: none; }
-
+  /*작품 제목 폰트 크기*/
   .ptitle {
     position: fixed; left: var(--pad); top: 50%;
     width: calc((100vw - var(--slide-w)) / 2 - var(--pad) - 24px);
-    font-size: clamp(26px, 2.6vw, 40px); font-weight: 400;
+    font-size: clamp(20px, 2vw, 30px); font-weight: 400;
     letter-spacing: -0.03em; line-height: 1.1;
     transform: translateY(-50%);
   }
