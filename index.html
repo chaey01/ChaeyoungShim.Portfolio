@@ -474,18 +474,20 @@ const PROJECTS = [
     ]
   },
   {
-    title: "Interactive artwork_2",
+    title: "Rainbow Trail",
     type: "Interactive room",
     year: "2026",
-    cover: "images/code-as-nature/cover.jpg",
-    link: "https://chaey01.github.io/",
+    cover: "images/rainbow-trail/cover.jpg",
+    link: "https://chaey01.github.io/week1/index.html",
+    live: "https://chaey01.github.io/week1/preview.html",   // 프로젝트 첫 화면에서 바로 그려볼 수 있어요
+    hint: "Move your mouse · Scroll for details ↓",
     text: [
-      "A weekly series of p5.js sketches exploring growth, flocking, noise and decay — natural systems rewritten as code.",
-      "Each sketch is a small rule set that is allowed to run until it surprises me. Generative / p5.js"
+      "A trail of light that follows the hand. Every movement of the mouse leaves a circle of colour; the faster you move, the larger the circle and the further its hue drifts around the rainbow.",
+      "Behind it, the background slowly breathes through four skies — blue, green, cosmos and sunset — while each trace fades like an afterimage."
     ],
-    meta: "p5.js, browser · CalArts, Fall 2026",
+    meta: "p5.js, browser · Code as Nature Week 1, CalArts",
     media: [
-      { embed: "https://chaey01.github.io/", caption: "Class archive — weekly sketches" }
+      { src: "images/rainbow-trail/cover.jpg", ar: "16/9" }
     ]
   },
   {
@@ -876,7 +878,7 @@ function showProject(i) {
   viewer.innerHTML = `
     <section class="hero${p.live ? " is-live" : ""}">${p.live
       ? `<iframe class="live" src="${p.live}" allow="autoplay; fullscreen" title="${p.title}"></iframe>
-         <div class="livehint"><span>Scroll for details ↓</span></div>`
+         <div class="livehint"><span>${p.hint || "Scroll for details ↓"}</span></div>`
       : `${coverEl(p)}<div class="htitle">${p.title}</div>`}</section>
     <section class="pbody">
       <div class="pintro">

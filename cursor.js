@@ -88,6 +88,10 @@
     targetSize = e.target.closest && e.target.closest(HOVER_TARGETS) ? HOVER_SIZE : SIZE;
   }, { passive: true });
   document.addEventListener("pointerleave", () => { ball.style.opacity = rim.style.opacity = "0"; shown = false; });
+  // 웹 작업(iframe) 위로 들어가면 커서 원을 숨겨요 — 그 안에서는 작품의 원래 커서를 써요
+  document.addEventListener("pointerover", (e) => {
+    if (e.target.tagName === "IFRAME") { ball.style.opacity = rim.style.opacity = "0"; shown = false; }
+  });
 
   function tick() {
     x += (mx - x) * FOLLOW;
